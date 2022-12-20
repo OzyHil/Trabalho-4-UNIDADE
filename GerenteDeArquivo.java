@@ -18,7 +18,7 @@ public class GerenteDeArquivo{
     public void carregarMeta(){} // Carrega o arquivo metadados.txt e bota na lista metaDados;
 
     public List<String> carregarAlunos(){
-        Path path = FileSystems.getDefault().getPath("Alunos.txt");
+        Path path = FileSystems.getDefault().getPath("src/Dados/Alunos.txt");
         List<String> toReturn = null;
         try {
             toReturn = Files.readAllLines(path);
@@ -26,12 +26,16 @@ public class GerenteDeArquivo{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        try{
         toReturn.remove(toReturn.size()-1);
+        } catch (IndexOutOfBoundsException ex){
+            return toReturn;
+        }
         return toReturn;
     }
 
     public List<String> carregarDocentes(){
-        Path path = FileSystems.getDefault().getPath("Docentes.txt");
+        Path path = FileSystems.getDefault().getPath("src/Dados/Docentes.txt");
         List<String> toReturn = null;
         try {
             toReturn = Files.readAllLines(path);
@@ -39,12 +43,16 @@ public class GerenteDeArquivo{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        toReturn.remove(toReturn.size()-1);
+        try{
+            toReturn.remove(toReturn.size()-1);
+            } catch (IndexOutOfBoundsException ex){
+                return toReturn;
+            }
         return toReturn;
     }
 
     public List<String> carregarTurmas(){
-        Path path = FileSystems.getDefault().getPath("Turmas.txt");
+        Path path = FileSystems.getDefault().getPath("src/Dados/Turmas.txt");
         List<String> toReturn = null;
         try {
             toReturn = Files.readAllLines(path);
@@ -52,12 +60,16 @@ public class GerenteDeArquivo{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        toReturn.remove(toReturn.size()-1);
+        try{
+            toReturn.remove(toReturn.size()-1);
+            } catch (IndexOutOfBoundsException ex){
+                return toReturn;
+            }
         return toReturn;
     }
 
     public List<String> carregarDisciplinas(){
-        Path path = FileSystems.getDefault().getPath("Disciplinas.txt");
+        Path path = FileSystems.getDefault().getPath("src/Dados/Disciplinas.txt");
         List<String> toReturn = null;
         try {
             toReturn = Files.readAllLines(path);
@@ -65,7 +77,11 @@ public class GerenteDeArquivo{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        toReturn.remove(toReturn.size()-1);
+        try{
+            toReturn.remove(toReturn.size()-1);
+            } catch (IndexOutOfBoundsException ex){
+                return toReturn;
+            }
         return toReturn;
     }
     public void adicionarLinha(int list, String add){}// Bota a string add na lista list (códigos definidos na classe Util).
@@ -82,8 +98,9 @@ public class GerenteDeArquivo{
         }
         
         try {
-            writer = new FileWriter("Alunos.txt");
+            writer = new FileWriter("src/Dados/Alunos.txt",true);
             writer.write(toWrite);
+            writer.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -94,8 +111,9 @@ public class GerenteDeArquivo{
         }
         
         try {
-            writer = new FileWriter("Docentes.txt");
+            writer = new FileWriter("src/Dados/Docentes.txt",true);
             writer.write(toWrite);
+            writer.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -106,8 +124,9 @@ public class GerenteDeArquivo{
         }
         
         try {
-            writer = new FileWriter("Turmas.txt");
+            writer = new FileWriter("src/Dados/Turmas.txt",true);
             writer.write(toWrite);
+            writer.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -118,8 +137,9 @@ public class GerenteDeArquivo{
         }
         
         try {
-            writer = new FileWriter("Disciplinas.txt");
+            writer = new FileWriter("src/Dados/Disciplinas.txt",true);
             writer.write(toWrite);
+            writer.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -1,23 +1,27 @@
 import java.util.ArrayList;
-import java.util.spi.ToolProvider;
 
 public class Docente extends Entidade{
     private ArrayList<Disciplina> disciplinas;
-    public ArrayList<Disciplina> getDisciplinas() {
-        return disciplinas;
-    }
-
-    public Docente() {
+    
+    public Docente(String nome, int codigo) {
+        super(nome, codigo);
+        disciplinas = new ArrayList<Disciplina>();
     }
 
     public Docente(String base) {
         super(base);
+        disciplinas = new ArrayList<Disciplina>();
+    }
+
+    public ArrayList<Disciplina> getDisciplinas() {
+        return disciplinas;
     }
 
     @Override
     public String toCsv() {
-        // TODO Auto-generated method stub
-        return null;
+        String toReturn = "";
+        toReturn = toReturn + getCodigo() + ";"+ getNome();
+        return toReturn;
     }
 
     public void addDisciplina(Disciplina toAdd){

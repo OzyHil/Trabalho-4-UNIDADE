@@ -11,9 +11,11 @@ public class Escola{
 
     //Metódos
     //TODO fazer os métodos de adição e adição darem throws qnd acessar um item q nao existem
-    public void adicionarAluno(Aluno toAdd){
-        alunos.put(maiorAluno, toAdd);
+    public Aluno adicionarAluno(String nome){
+        Aluno aluno = new Aluno(nome,maiorAluno);
+        alunos.put(maiorAluno, aluno);
         maiorAluno++;
+        return aluno;
     }
 
     public void removerAluno(int codigo) throws NoSuchKeyException{
@@ -23,9 +25,11 @@ public class Escola{
             alunos.remove(codigo);
     }
 
-    public void adicionarDocente(Docente toAdd){
-        docentes.put(maiorDocente, toAdd);
-        maiorDisciplina++;
+    public Docente adicionarDocente(String nome){
+        Docente docente = new Docente(nome, maiorDocente);
+        docentes.put(maiorDocente, docente);
+        maiorDocente++;
+        return docente;
     }
 
     public void removerDocente(int codigo) throws NoSuchKeyException{
@@ -35,9 +39,11 @@ public class Escola{
             docentes.remove(codigo);
     }
 
-    public void adicionarDisciplina(Disciplina toAdd){
-        disciplinas.put(maiorDisciplina, toAdd);
+    public Disciplina adicionarDisciplina(String nome){
+        Disciplina disc =  new Disciplina(nome, maiorDisciplina);
+        disciplinas.put(maiorDisciplina, disc);
         maiorDisciplina++;
+        return disc;
     }
 
     public void removerDisciplina(int codigo) throws NoSuchKeyException{
@@ -47,9 +53,11 @@ public class Escola{
             disciplinas.remove(codigo);
     }
 
-    public void adicionarTurma(Turma toAdd){
-        turmas.put(maiorTurma, toAdd);
+    public Turma adicionarTurma(String nome){
+        Turma turma = new Turma(nome,maiorTurma);
+        turmas.put(maiorTurma, turma);
         maiorTurma++;
+        return turma;
     }
 
     public void removerTurma(int codigo) throws NoSuchKeyException{
@@ -58,6 +66,11 @@ public class Escola{
         else
             turmas.remove(codigo);
     }
+
+    public void editarAluno(){};
+    public void editarTurma(){};
+    public void editarDisciplina(){};
+    public void editarDocente(){};
 
     //Os métodos abaixo estão retornando null enquanto não são devidamente implementados, pra não dar erro no java
 
@@ -93,197 +106,6 @@ public class Escola{
         return toReturn;
     }//Retorna o nome das turmas e seus códigos.
 
-    public void editarDocente(int codigo) throws NoSuchKeyException{
-        if (!docentes.containsKey(codigo))
-            throw new NoSuchKeyException();
-        Docente d;
-        System.out.println("1 - Nome");
-        switch(Util.lerInteger()){
-            case 1:
-                d = docentes.get(codigo);
-                System.out.println("Nome atual: " + d.getNome());
-                System.out.println("Qual o novo nome?");
-                String buffer = Util.lerString();
-                System.out.println("O novo nome será: " + buffer + " ctz? 1 - SS");
-                if(Util.lerInteger() == 1){
-                    d.setNome(buffer);
-                    System.out.println("Nome mudado com sucesso.");
-                } else {
-                    return;
-                }
-                break;
-            default:
-                System.out.println("Digite uma opção valida");
-        }
-        //int key = docentes.get(codigo).getCodigo();
-    }//Permite mudar informações de um docente, incluindo disciplinas.
-
-    public void editarDisciplina(int codigo) throws NoSuchKeyException{
-        if (!disciplinas.containsKey(codigo))
-            throw new NoSuchKeyException();
-        System.out.println("1 - Nome, 2 - Docentes, 3 - Alunos, 4 - Notas, 5 - Ano");
-        Disciplina d = disciplinas.get(codigo);
-        int selector;
-        switch(Util.lerInteger()){
-            case 1:
-                System.out.println("Nome atual: " + d.getNome());
-                System.out.println("Qual o novo nome?");
-                String buffer = Util.lerString();
-                System.out.println("O novo nome será: " + buffer + " ctz? 1 - SS");
-                if(Util.lerInteger() == 1){
-                    d.setNome(buffer);
-                    System.out.println("Nome mudado com sucesso.");
-                } else {
-                    return;
-                }
-                break;
-            case 2: 
-                System.out.println("1 - Add, 2 - Remove");
-                selector = Util.lerInteger();
-                if (selector == 1){
-                    //Supoe-se q a UI não vai deixar o usuario selecionar algo inexistente. Se UI não for feita,
-                    //implementar medidas de segurança
-                    System.out.println("Escolha um docente entre os disponíveis:");
-                    System.out.println(mapearDocentes());
-                    Integer toAdd = Util.lerInteger();
-                    if (!d.adicionarDocente(docentes.get(toAdd))){
-                        System.out.println("Esse docente já ta nessa disciplina");
-                    } else {
-                        docentes.get(toAdd).addDisciplina(d);
-                        System.out.println("Feito");
-                    }
-
-                } else {
-                    if (d.getDocentesSize()==1){
-                        System.out.println("Uma disciplina n pode ficar sem docentes");
-                        return;
-                    } else {
-                        System.out.println("Escolha:");
-                        System.out.println(d.mapearDocentes());
-                        Integer toRemove = Util.lerInteger();
-                        if(!d.removerDocente(docentes.get(toRemove))){
-                            System.out.println("Esse docente não tá nessa disciplina");
-                        }else {
-                            docentes.get(toRemove).removeDisciplina(d);
-                            System.out.println("Feito");
-                        }
-                    }
-                }
-                break;
-            case 3:
-            System.out.println("1 - Add, 2 - Remove");
-                selector = Util.lerInteger();
-                if (selector == 1){
-                    //Supoe-se q a UI não vai deixar o usuario selecionar algo inexistente. Se UI não for feita,
-                    //implementar medidas de segurança
-                    System.out.println("Escolha um Aluno entre os disponíveis:");
-                    System.out.println(mapearAlunos());
-                    Integer toAdd = Util.lerInteger();
-                    if (!d.adicionarAluno(alunos.get(toAdd))){
-                        System.out.println("Esse aluno já ta nessa disciplina");
-                    } else {
-                        System.out.println("Feito");
-                    }
-                    //TODO adicionar a possibilidade de adicionar a turma toda de vez.
-                } else {
-                    System.out.println("Escolha:");
-                    System.out.println(d.mapearAlunos());
-                    Integer toRemove = Util.lerInteger();
-                    if(!d.removerAluno(alunos.get(toRemove))){
-                        System.out.println("Esse aluno não tá nessa disciplina");
-                    }else {
-                        System.out.println("Feito");
-                    }
-                    
-                }
-                break;
-            case 4:
-                d.editarNotas(this);
-                break;
-            default:
-                System.out.println("Digite uma opção valida");
-                break;
-        }
-    }//Permite mudar informações de uma disciplina, incluindo docentes, alunos e notas. 
-    //Não deixar disciplina ficar sem docente. Não deixar adicionar aluno de ano errado ser cadastrado.
-
-    public void editarAluno(int codigo) throws NoSuchKeyException{
-        if (!alunos.containsKey(codigo))
-            throw new NoSuchKeyException();
-        System.out.println("1 - Nome"); //Só da pra editar nome por agr
-        Aluno a;
-        switch(Util.lerInteger()){
-            case 1:
-                a = alunos.get(codigo);
-                System.out.println("Nome atual: " + a.getNome());
-                System.out.println("Qual o novo nome?");
-                String buffer = Util.lerString();
-                System.out.println("O novo nome será: " + buffer + " ctz? 1 - SS");
-                if(Util.lerInteger() == 1){
-                    a.setNome(buffer);
-                    System.out.println("Nome mudado com sucesso.");
-                } else {
-                    return;
-                }
-                break;
-            default:
-                System.out.println("Digite uma opção valida");
-        }
-    }//Permite mudar informações de um aluno.
-
-    public void editarTurma(int codigo) throws NoSuchKeyException{
-        if (!turmas.containsKey(codigo))
-            throw new NoSuchKeyException();
-            Turma t = turmas.get(codigo);
-            System.out.println("1- Nome 2 - Alunos");
-            switch(Util.lerInteger()){
-                case 1:
-                    t = turmas.get(codigo);
-                    System.out.println("Nome atual: " + t.getNome());
-                    System.out.println("Qual o novo nome?");
-                    String buffer = Util.lerString();
-                    System.out.println("O novo nome será: " + buffer + " ctz? 1 - SS");
-                    if(Util.lerInteger() == 1){
-                        t.setNome(buffer);
-                        System.out.println("Nome mudado com sucesso.");
-                    } else {
-                        return;
-                    }
-                    break;
-                case 2:
-                System.out.println("1 - Add, 2 - Remove");
-                int selector = Util.lerInteger();
-                if (selector == 1){
-                    //Supoe-se q a UI não vai deixar o usuario selecionar algo inexistente. Se UI não for feita,
-                    //implementar medidas de segurança
-                    System.out.println("Escolha um Aluno entre os disponíveis:");
-                    System.out.println(mapearAlunos());
-                    Integer toAdd = Util.lerInteger();
-                    if (!t.adicionarAluno(alunos.get(toAdd))){
-                        System.out.println("Esse aluno já ta nessa turma");
-                    } else {
-                        alunos.get(toAdd).setTurma(codigo);
-                        System.out.println("Feito");
-                    }
-                    //TODO adicionar a possibilidade de adicionar a turma toda de vez.
-                } else {
-                    System.out.println("Escolha:");
-                    System.out.println(t.mapearAlunos());
-                    Integer toRemove = Util.lerInteger();
-                    if(!t.removerAluno(alunos.get(toRemove))){
-                        System.out.println("Esse aluno não tá nessa turma");
-                    }else {
-                        alunos.get(toRemove).setTurma(-99);
-                        System.out.println("Feito");
-                    }
-                    
-                }
-                    break;
-                default:
-                    System.out.println("Digite uma opção valida");
-            }
-    }//Permite mudar informações de um docente.
-
     public void gerarRelatórios(int tipo){}//Gerar relatórios com o GeradorDeRelatorio e passar pro arquivo com o GerenteDeArquivos.
 
     public void carregar(){
@@ -299,12 +121,12 @@ public class Escola{
         }
         Turma t;
         for (String base : ga.carregarTurmas()) {
-            t = new Turma(base);
+            t = new Turma(base,this);
             turmas.put(t.getCodigo(), t); 
         }
         Disciplina dic;
         for (String base : ga.carregarDisciplinas()) {
-            dic = new Disciplina(base);
+            dic = new Disciplina(base,this);
             disciplinas.put(dic.getCodigo(), dic); 
         }
     }
